@@ -14,3 +14,11 @@ To understand this setup, let's understand the request flow and traffic source:
 2. The Internet Protocol (IP) address si returned to the browser or mobile app.
 3. Once the client obtains the IP address, HTTP requests done by the user are sent directly to our web server.
 4. Our web server returns HTML pages or a JSON response for rendering.
+
+In this case, the traffic to our web server comes from two sources: a web application and a mobile application:
+
+- **Web app:** uses a combination of server-side language to handles business logic, storage, etc; and client side languages (HTML, CSS, JS) for visual presentation and interactivity.
+- **Mobile app:** HTTP protocol is the communication protocol between the mobile app and the web server. JSON is the commonly used API response format to transfer data.
+
+## Database
+
