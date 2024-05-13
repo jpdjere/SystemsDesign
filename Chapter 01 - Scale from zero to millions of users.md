@@ -22,3 +22,26 @@ In this case, the traffic to our web server comes from two sources: a web applic
 
 ## Database
 
+With the growth of the user base, one server is no longer enough; and we start needing multiple servers: one for web/mobile traffic and another one for the database. Separating web/mobile traffic (the web tier) and database (data tier) servers allows them to be scaled independently.
+
+![](2024-06-03-14-53-13.png)
+
+### Which databases to use?
+
+We can choose between a traditional relational database and a non-relational database.
+
+Relational databases are also called **relational database management system (RDBMS)** or **SQL databases**. The most popular are SQLite, MySQL, PostgreSQL, etc. They represent and store data in tables and rows. We can perform join operations using SQL across different database tables.
+
+Non-relational databases are also called **NoSQL databases**. Popular ones are CouchDB, Neo4J (graph database), Cassandra, Amazon DynamoDB, MongoDB. Join operations are generally not supported in non-relational DBs. These databases are grouped into four categories:
+
+- **key-value stores**
+- **graph stores**
+- **column stores**
+- **document stores**
+
+For most engineers, relational databases are the best option since they have been around for over 40 years, and they have historically worked well.  However, non-relational databases might be the right choice if:
+
+- Your application requires super-low latency.
+- Your data is unstructured.
+- You only need to serialize and deserialize data, such as JSON or YAML.
+- You need to store a massive amount of data.
