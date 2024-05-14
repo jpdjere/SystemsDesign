@@ -60,4 +60,19 @@ In summary, bandwidth is the maximum data transfer capacity of a communication c
 
 ## Vertical scaling vs horizontal scaling
 
+**Vertical scaling**, referred to as "scale up" is the process of adding more power (CPU, RAM, etc) to our servers.
+
+**Horizontal scaling**, referred to as "scale out", is the process of scaling by adding more servers to our pool of resources.
+
+When traffic is low, **vertical scaling** is a great option, and the simplicity of vertical scaling is its main advantage. However, it has some serious limitations:
+
+- **It has a hard limit:** it is impossible to add unlimited CPU and memory to a single server.
+- **It does not have failover and redundancy**: if the one server goes down, the website/app goes down with it completely.
+
+**Horizontal scaling** is more desirable for alrge scale applications due to the limitations of vertical scaling. 
+
+In the single server setup we described above, users are connected to the web server directly, and would be unable to access to the site/app if it went do. In a less dramatic scenarios, if many users access the web server simultaneously, and the web server's load limit is reached, users will experience slower responses or fail to connect to the servers.
+
+A **load balancer** is the best technique to addresss these problems.
+
 
