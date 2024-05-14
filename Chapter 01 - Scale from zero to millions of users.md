@@ -41,7 +41,23 @@ Non-relational databases are also called **NoSQL databases**. Popular ones are C
 
 For most engineers, relational databases are the best option since they have been around for over 40 years, and they have historically worked well.  However, non-relational databases might be the right choice if:
 
-- Your application requires super-low latency.
+- Your application requires super-low latency: NoSQL databases are designed to handle large volumes of data and provide high performance with low latency. They are more flexible and scalable than relational databases, which can be an advantage in handling unstructured data and frequent data changes.
 - Your data is unstructured.
-- You only need to serialize and deserialize data, such as JSON or YAML.
+- You only need to serialize and deserialize data, such as JSON or YAML: A real-life example of an application that only requires serialization and deserialization of data is a caching system. A caching system is used to temporarily store frequently accessed data in memory or on disk, in order to reduce the latency and improve the performance of the system. In a caching system, the data is typically stored in a serialized format, such as JSON or binary, in order to minimize the storage size and maximize the retrieval speed. When a request is made for the data, the caching system retrieves the serialized data from memory or disk, deserializes it into the original data structure or object, and returns it to the client.
 - You need to store a massive amount of data.
+
+## Bandwith vs Throughput
+
+Bandwidth and throughput are two related but distinct terms in data communication and computing systems.
+
+**Bandwidth:**
+Bandwidth refers to the maximum data transfer capacity of a communication channel or network. It is the measure of the amount of data that can be transmitted per unit of time, typically measured in bits per second (bps) or bytes per second (Bps). Bandwidth is determined by the physical characteristics of the communication channel, such as the frequency range, signal-to-noise ratio, and modulation technique. Bandwidth is an upper limit on the amount of data that can be transmitted, but it does not necessarily reflect the actual data transfer rate.
+
+**Throughput:**
+Throughput is the measure of the actual amount of data or work that can be processed, transmitted, or received in a given time frame. It is the rate at which a system can complete multiple operations or tasks. In data communication, throughput is typically measured in bits per second (bps) or bytes per second (Bps). Throughput is affected by various factors, such as latency, packet loss, and network congestion, and it is usually lower than the available bandwidth.
+
+In summary, bandwidth is the maximum data transfer capacity of a communication channel or network, while throughput is the actual data transfer rate achieved in a given time frame. Bandwidth is an upper limit on the amount of data that can be transmitted, while throughput is the actual amount of data transmitted. Bandwidth is a theoretical value, while throughput is a measured value.
+
+## Vertical scaling vs horizontal scaling
+
+
