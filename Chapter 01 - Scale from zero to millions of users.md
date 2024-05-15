@@ -75,4 +75,8 @@ In the single server setup we described above, users are connected to the web se
 
 A **load balancer** is the best technique to addresss these problems.
 
+## Load balancer
 
+A **load balancer** distirbuites incoming traffic evenly among web server that are defined in a load-balanced set. The figure below shows how one works:
+
+![](2024-06-03-15-19-36.png)
