@@ -15,6 +15,8 @@ To understand this setup, let's understand the request flow and traffic source:
 3. Once the client obtains the IP address, HTTP requests done by the user are sent directly to our web server.
 4. Our web server returns HTML pages or a JSON response for rendering.
 
+> **[Networking and DNS](https://github.com/jpdjere/Interviews/blob/1b3fd1a04ee5363e29853a132ca28220822e1805/Networking.md#domain-name-system-dns)**
+
 In this case, the traffic to our web server comes from two sources: a web application and a mobile application:
 
 - **Web app:** uses a combination of server-side language to handles business logic, storage, etc; and client side languages (HTML, CSS, JS) for visual presentation and interactivity.
@@ -77,6 +79,105 @@ A **load balancer** is the best technique to addresss these problems.
 
 ## Load balancer
 
-A **load balancer** distirbuites incoming traffic evenly among web server that are defined in a load-balanced set. The figure below shows how one works:
+> A load balancer is a device or software that distributes incoming network traffic across multiple servers or resources to ensure no single server becomes overwhelmed, improving reliability and performance. It is a type of reverse proxy, that recieves requests from clients and routing them to the appropriate server. Load balancers can use various algorithms, such as round robin or least connections, to determine the best server for each request. They also monitor the health of servers to avoid sending traffic to a failed or unresponsive one, and can sometimes perform SSL/TLS termination to offload encryption tasks from the servers.
+
+----
+<summary><b>Proxy vs Reverse Proxy</b>
+<details>
+A reverse proxy is called so because it performs the opposite function of a traditional (or "forward") proxy. Here’s a detailed explanation of the terms and their differences:
+
+### Reverse Proxy
+
+A reverse proxy sits between clients and one or more backend servers. It accepts requests from clients and forwards them to the appropriate backend server. The responses from the backend servers are then sent back to the clients through the reverse proxy. This setup allows the reverse proxy to manage and distribute the load, cache content, provide security features, and handle SSL termination.
+
+**Key Functions of a Reverse Proxy:**
+- **Load Balancing:** Distributing client requests across multiple backend servers to balance the load.
+- **Caching:** Storing copies of responses from the backend servers to serve future requests faster.
+- **SSL Termination:** Handling SSL encryption and decryption to offload this work from the backend servers.
+- **Security:** Acting as an additional layer of security, masking the backend servers and filtering potentially malicious traffic.
+- **Compression:** Compressing server responses to reduce bandwidth usage.
+
+### Forward Proxy
+
+A traditional (or "forward") proxy, simply referred to as a proxy, sits between client devices and the internet. It takes client requests, forwards them to the appropriate internet resource, and then passes the responses back to the clients. This type of proxy is used mainly to enhance privacy, control internet access, and cache content to improve performance.
+
+**Key Functions of a Forward Proxy:**
+- **Anonymity:** Hiding the client’s IP address from the destination server.
+- **Access Control:** Restricting or allowing access to specific internet resources based on policies.
+- **Caching:** Storing copies of content from the internet to reduce load times and save bandwidth.
+- **Logging and Monitoring:** Tracking user activity and internet usage for analysis or compliance purposes.
+
+### Comparison: Reverse Proxy vs. Forward Proxy
+
+- **Direction of Proxying:**
+  - **Forward Proxy:** Clients → Proxy → Internet
+  - **Reverse Proxy:** Internet (Clients) → Proxy → Backend Servers
+
+- **Primary Users:**
+  - **Forward Proxy:** Typically used by clients (end-users, organizations) to access the internet.
+  - **Reverse Proxy:** Typically used by servers to handle incoming client requests.
+
+- **Purpose:**
+  - **Forward Proxy:** Privacy, access control, caching for client requests.
+  - **Reverse Proxy:** Load balancing, security, caching, SSL termination for server responses.
+
+The terms "forward proxy" and "reverse proxy" can indeed seem confusing at first because both involve intermediaries between clients and servers. However, the distinction lies in their primary roles and the direction of the initial request flow relative to the proxy.
+
+### Forward Proxy
+A forward proxy sits in front of clients (or client devices) and handles requests going out to the internet. 
+
+**Flow:**
+1. **Client -> Forward Proxy:** The client sends a request to the forward proxy.
+2. **Forward Proxy -> Server:** The forward proxy forwards the request to the appropriate internet server.
+3. **Server -> Forward Proxy:** The server sends the response back to the forward proxy.
+4. **Forward Proxy -> Client:** The forward proxy sends the response back to the client.
+
+In this case, the proxy acts on behalf of the client, masking the client's identity from the server. It is often used for purposes like anonymity, access control, and caching web resources.
+
+### Reverse Proxy
+A reverse proxy sits in front of servers and handles requests coming from clients on the internet.
+
+**Flow:**
+1. **Client -> Reverse Proxy:** The client sends a request to the reverse proxy.
+2. **Reverse Proxy -> Backend Server:** The reverse proxy forwards the request to the appropriate backend server.
+3. **Backend Server -> Reverse Proxy:** The backend server sends the response back to the reverse proxy.
+4. **Reverse Proxy -> Client:** The reverse proxy sends the response back to the client.
+
+In this case, the proxy acts on behalf of the server(s), masking the servers' identities from the client. It is typically used for load balancing, caching, SSL termination, and security purposes.
+
+### Key Differences in Role and Direction
+- **Forward Proxy:**
+  - Acts on behalf of clients.
+  - Clients know about the forward proxy and send requests to it explicitly.
+  - Used mainly for client-side activities like anonymity and access control.
+
+- **Reverse Proxy:**
+  - Acts on behalf of servers.
+  - Clients do not necessarily know they are interacting with a proxy; they see it as the actual server.
+  - Used mainly for server-side activities like load balancing and security.
+
+The "reverse" in "reverse proxy" refers to the reversal of roles and primary focus:
+- In a forward proxy, the proxy is positioned closer to the client, managing outbound requests to servers.
+- In a reverse proxy, the proxy is positioned closer to the server, managing inbound requests from clients.
+
+So while the data flow may appear similar in both cases, the "reverse" aspect highlights the difference in which end of the client-server interaction the proxy primarily serves and manages.
+</details></summary>
+
+----
+
+<br>
+
+A **load balancer** distributes incoming traffic evenly among web server that are defined in a load-balanced set. The figure below shows how one works:
 
 ![](2024-06-03-15-19-36.png)
+
+Users connect to the public IP of the load balancer directly. With this setup, web servers are now unreachable by client directly. For better security, private IPs are used for communication between servers. A private IP is an IP address reachable only between servers in the same network, but unreachable over the internet. So, the load balancer communicates with web servers through private IPs.
+
+In the figure above, after a load balancer and second web server are added, we have succsfully solved the no-failover issue and improved the availability of the web tier:
+
+- If **server 1** goes offline, all traffic will be routed to **server 2**, preventing the website from going offline. This provides time to add a new healthy web server to the server pool.
+- If the website traffic grows rapidly, and two servers are not enough to handle the traffic, the load balancer can handle the problem gracefully of we **add more servers to the server pool**, and the load balancer starts sending requests to them.
+
+## Database replication
+
+While the web tier looks good, 
