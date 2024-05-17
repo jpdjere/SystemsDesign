@@ -178,6 +178,33 @@ In the figure above, after a load balancer and second web server are added, we h
 - If **server 1** goes offline, all traffic will be routed to **server 2**, preventing the website from going offline. This provides time to add a new healthy web server to the server pool.
 - If the website traffic grows rapidly, and two servers are not enough to handle the traffic, the load balancer can handle the problem gracefully of we **add more servers to the server pool**, and the load balancer starts sending requests to them.
 
+> **Failover vs Redundancy**
+>> Failover and redundancy are two key concepts in the design of reliable and highly available systems, but they serve slightly different purposes:
+>
+> 1. Redundancy: This is **the duplication of critical components or systems to increase reliability.** In other words, it's the practice of having more than one piece of equipment or system that can do the same job, so that if one fails, the others can take over. This can be applied to power supplies, hard drives, servers, and even entire data centers.
+> 2. Failover: This is a method of protecting computer systems from failure, in which standby equipment automatically takes over when the main system fails. **Failover is the process that happens when redundancy is put into action.** It's the mechanism that determines when a component has failed, and then switches to a redundant component.
+
+
 ## Database replication
 
-While the web tier looks good, 
+While the web tier now looks good, the current design has only one database, so it does not support failover and redundancy. **Database replication** is a common techinque to address those problems.
+
+**Database replication is the process of creating and maintaining multiple copies of a database, often in different locations, to improve data availability, reliability, and scalability.**
+
+These copies, or replicas, are updated with the same data at the same time, or nearly the same time, to ensure that they are consistent. The replication process can be synchronous, where changes are applied to all replicas at the same time, or asynchronous, where changes are applied to one replica first and then propagated to the others.
+
+Usually, a master database only suppots write operations, while replica databases get copies of the data from the master, and support only read operations.
+
+All data-modyfing commands like insert, delete or update are sent to the master database. Since most application have a much higher number of read than write operations, the number of replicas in a system is usually larger than the number of master databases.
+
+![](2024-06-04-17-40-16.png)
+
+Advantages of database replication:
+
+- **Better performance:** in a master-replica model, all write operations happen on the master node; by directing read queries to replicas, the load on the primary database can be reduced, improving the overall performance of the system.
+
+- **High Availability and Reliability**: If one database server fails, the system can switch to a replica, ensuring that the data is still accessible.
+
+- **Geographical Distribution**: Replicas can be located in different geographical regions to provide faster access to users in those regions and to ensure data availability in case of a regional outage.
+
+So, what happens if one database goes offline? The architectural design in the figure above shows how such a case would be handled:
