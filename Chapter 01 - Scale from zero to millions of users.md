@@ -208,3 +208,8 @@ Advantages of database replication:
 - **Geographical Distribution**: Replicas can be located in different geographical regions to provide faster access to users in those regions and to ensure data availability in case of a regional outage.
 
 So, what happens if one database goes offline? The architectural design in the figure above shows how such a case would be handled:
+
+- If only one replica database is available and it goes offline, read operations will be directed to the master database temporarily. As soon as the issue is found, a new replica database will replace the old one. If multiple replicas are available. read operations are just redirected to the remaining healthy replicas; meanwhile, a new replica is spun up to replace the one that when down.
+- If the master database goes offline, a replica will be promoted to be the new master. All database operation will be temporarily executed on the new master database. A new replica database will replace the one that went down.
+
+In production systems, promoting
